@@ -25,13 +25,18 @@ pipeline{
             steps{
                 parallel(
                   FireFox:{
-                       echo "Iam Firefox browser"
-                       
+                       echo "Iam Firefox browser"  
                   },
                   Safari: {
                       echo "Iam Safari Browser"
+                  },
+				  Chrome: {
+                      echo "Iam Chrome Browser"
+                  },
+				  IE: {
+                      echo "Iam IE Browser"
                   }
-                    )
+				)
             }
             
         }
