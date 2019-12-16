@@ -4,13 +4,6 @@ pipeline{
     }
     agent any
     parameters { string(name: 'Test Suite', defaultValue: 'ALL', description: '') }
-    matrix {
-        axes {
-            axis {
-                name 'PLATFORM'
-                values 'linux', 'mac', 'windows'
-            }
-        }
     stages{
         stage('Preparation') {
             steps{
@@ -73,7 +66,6 @@ pipeline{
             }
         }
     
-    }
     }
     post{
         always{
