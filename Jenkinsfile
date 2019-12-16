@@ -1,23 +1,51 @@
-node {
-    properties([parameters([string(defaultValue: 'ronaldo', description: '', name: 'name', trim: false)])])
-   def mvnHome
-   stage('Preparation') { // for display purposes
-     checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/linuxacademy/content-cje-prebuild.git']]])
-           
-      mvnHome = tool 'M3'
-   }
-   stage('Build') {
-      // Run the maven build
-      if (isUnix()) {
-         sh "'${mvnHome}/bin/mvn' -Dmaven.test.failure.ignore clean package"
-      } else {
-         bat(/"${mvnHome}\bin\mvn" -Dmaven.test.failure.ignore clean package/)
-      }
-   }
-   stage('Post Job'){
-       sh 'bin/makeindex'
-   }
-   stage('Results') {
-      archiveArtifacts 'index.jsp'
-   }
+pipeline{
+    tools{
+        maven 'M3'
+    }
+    agent any
+    parameters { string(name: 'Environment', defaultValue: 'staging', description: '') }
+    stages{
+        stage('Preparation') {
+            steps{
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/SanthanaKrishnanm/jenkins_pipeline.git']]])   
+            }
+         }
+        stage('Build'){
+            steps{
+                script{
+                    if (isUnix()) {
+                        sh "'mvn' -Dmaven.test.failure.ignore clean package"
+                    } else {
+                        bat(/"mvn" -Dmaven.test.failure.ignore clean package/)
+                    }
+                }
+            }
+        }
+        stage('Test'){
+            steps{
+                parallel(
+                  FireFox:{
+                       echo "Iam Firefox browser"
+                       
+                  },
+                  Safari: {
+                      echo "Iam Safari Browser"
+                  }
+                    )
+            }
+            
+        }
+  
+        stage('Deploy'){
+            steps{
+                echo 'Deploy Code'
+            }
+        }
+    
+    }
+    post{
+        always{
+            echo'I wont fail'
+        }
+    }
 }
