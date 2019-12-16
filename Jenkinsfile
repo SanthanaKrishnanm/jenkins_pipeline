@@ -4,6 +4,13 @@ pipeline{
     }
     agent any
     parameters { string(name: 'Test Suite', defaultValue: 'ALL', description: '') }
+    matrix {
+        axes {
+            axis {
+                name 'PLATFORM'
+                values 'linux', 'mac', 'windows'
+            }
+        }
     stages{
         stage('Preparation') {
             steps{
@@ -50,6 +57,7 @@ pipeline{
             }
             
         }
+    }
         stage('Sanity check - PRD') {
             steps {
                 input "Does the UAT environment look ok?"
