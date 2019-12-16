@@ -21,7 +21,17 @@ pipeline{
                 }
             }
         }
-        stage('Test'){
+		stage('Pre Deployment Test'){
+            steps{
+                 echo "Unit Testing" 
+            }
+        }
+        stage('Deploy'){
+            steps{
+                 sh 'bin/makeindex'
+            }
+        }
+		stage('Post Deployment Test'){
             steps{
                 parallel(
                   FireFox:{
@@ -39,11 +49,6 @@ pipeline{
 				)
             }
             
-        }
-        stage('Deploy'){
-            steps{
-                 sh 'bin/makeindex'
-            }
         }
 		stage('Results'){
             steps{
