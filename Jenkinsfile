@@ -59,7 +59,19 @@ pipeline{
     }
     post{
         always{
-            echo'I wont fail'
+            echo 'Always Run'
+        }
+		success {
+            echo 'successful'
+        }
+        failure {
+            echo 'failed'
+        }
+        unstable {
+            echo 'unstable'
+        }
+        changed {
+            echo 'Pipeline has changed - from failing to successful'
         }
     }
 }
