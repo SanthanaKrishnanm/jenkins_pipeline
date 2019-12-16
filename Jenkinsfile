@@ -35,10 +35,14 @@ pipeline{
             }
             
         }
-  
         stage('Deploy'){
             steps{
-                echo 'Deploy Code'
+                 sh 'bin/makeindex'
+            }
+        }
+		stage('Results'){
+            steps{
+                 archiveArtifacts 'index.jsp'
             }
         }
     
