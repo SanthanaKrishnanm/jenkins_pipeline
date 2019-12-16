@@ -57,7 +57,6 @@ pipeline{
             }
             
         }
-    }
         stage('Sanity check - PRD') {
             steps {
                 input "Does the UAT environment look ok?"
@@ -74,6 +73,7 @@ pipeline{
             }
         }
     
+    }
     }
     post{
         always{
