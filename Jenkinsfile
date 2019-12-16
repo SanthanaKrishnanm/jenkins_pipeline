@@ -60,9 +60,6 @@ pipeline{
     post{
         always{
             echo 'Always Run'
-			mail to: 'smurugesan@evolenthealth.com',
-			subject: "Pipeline Name: ${currentBuild.fullDisplayName}",
-			body: "Build Url: ${env.BUILD_URL}"
         }
 		success {
             echo 'successful'
