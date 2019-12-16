@@ -3,7 +3,7 @@ pipeline{
         maven 'M3'
     }
     agent any
-    parameters { string(name: 'Environment', defaultValue: 'staging', description: '') }
+    parameters { string(name: 'Test Suite', defaultValue: 'ALL', description: '') }
     stages{
         stage('Preparation') {
             steps{
@@ -26,12 +26,12 @@ pipeline{
                  echo "Unit Testing" 
             }
         }
-        stage('Deploy'){
+        stage('UAT-Deploy'){
             steps{
                  sh 'bin/makeindex'
             }
         }
-		stage('Post Deployment Test'){
+		stage('UAT - Post Deployment Test'){
             steps{
                 parallel(
                   FireFox:{
@@ -49,6 +49,16 @@ pipeline{
 				)
             }
             
+        }
+		stage('Sanity check - PRD') {
+            steps {
+                input "Does the UAT environment look ok?"
+            }
+        }
+		stage('PRD Deploy') {
+            steps {
+                echo 'Deploying in PRD'
+            }
         }
 		stage('Results'){
             steps{
