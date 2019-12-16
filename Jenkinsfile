@@ -22,8 +22,8 @@ pipeline{
             }
         }
 		stage('Pre Deployment Test'){
-            steps{
-                 echo "Unit Testing" 
+			steps{
+				echo "Unit Testing" 
             }
         }
         stage('UAT-Deploy'){
@@ -32,33 +32,33 @@ pipeline{
             }
         }
 		stage('UAT - Post Deployment Test'){
-            steps{
-                parallel(
-                  FireFox:{
-                       echo "Iam Firefox browser"  
-                  },
-                  Safari: {
-                      echo "Iam Safari Browser"
-                  },
-				  Chrome: {
-                      echo "Iam Chrome Browser"
-                  },
-				  IE: {
-                      echo "Iam IE Browser"
-                  }
+			steps{
+				parallel(
+					FireFox:{
+						echo "Iam Firefox browser"  
+					},
+					Safari: {
+						echo "Iam Safari Browser"
+					},
+					Chrome: {
+						echo "Iam Chrome Browser"
+					},
+					IE: {
+						echo "Iam IE Browser"
+					}
 				)
-            }
+			}
             
         }
 		stage('Sanity check - PRD') {
-            steps {
-                input "Does the UAT environment look ok?"
-            }
-        }
+			steps {
+				input "Does the UAT environment look ok?"
+			}
+		}
 		stage('PRD Deploy') {
-            steps {
-                echo 'Deploying in PRD'
-            }
+			steps {
+				echo 'Deploying in PRD'
+			}
         }
 		stage('Results'){
             steps{
